@@ -1,48 +1,68 @@
 # Nginx Management.
 
+A detailed sheet with different life-saving steps for working with Nginx on AWS virtual machines(VMs).
+
+> Nginx is a proxy - a reverse proxy, that sits in front of your server. It intercepts every http request to you
+> server, and helps as lot to improve security. It also provides massive support for reverse-proxying, caching, load-balancing,
+> and more I guess. [Read more](https://nginx.org).
+
+
+## **Nano and Vim tips**
+
+- CTRL + o then ENTER then CTRL + x - save a file in nano.
+- :qa - exits a file in vim
+- :qa! - force-exits a file in vim
+- :wq - saves a file in vim
+
 ## Installing Nginx.
 
-Here’s how to perform a **clean installation of Nginx** on Ubuntu:
+Here’s how to perform a **clean installation of Nginx** on Ubuntu - my prefered OS fro VMs:
 
-### Step 1: Update Your Package List
+### 1: Update Your Package List
+
 ```bash
 sudo apt update && sudo apt upgrade -y
 ```
 
-### Step 2: Install Nginx
+### 2: Install Nginx
+
 ```bash
 sudo apt install nginx -y
 ```
 
-### Step 3: Enable and Start the Nginx Service
+### 3: Enable and Start the Nginx Service
+
 ```bash
 sudo systemctl enable nginx
 sudo systemctl start nginx
+# sudo systemctl restart nginx
+# sudo systemctl stop nginx
 ```
 
-### Step 4: Check Nginx Status
+### 4: Check Nginx Status
+
 ```bash
 sudo systemctl status nginx
 ```
 
 You should see it **active (running)**.
 
-### Step 5: Verify Installation in Browser or CLI
+### 5: Verify Installation in Browser or CLI
 
 - Open a browser and visit:  
-  ```
-  http://your-server-public-ip
-  ```
-  You should see the **default Nginx welcome page**.
+
+```bash
+http://your-server-public-ip # as earlier stated, Nginx would intercept all incoming http traffic
+```
+You should see the **default Nginx welcome page**.
 
 - Or use `curl`:
-  ```bash
-  curl http://localhost
-  ```
 
-Would you like help setting up a custom server block (virtual host) now?
+```bash
+curl http://localhost
+```
 
-### Adding SSl and setting up for reverse proxy-ing.
+### Adding SSl to Domains, and Setting up for Reverse Proxy-ing.
 
 1. Open nginx config file.
 
@@ -50,36 +70,44 @@ Would you like help setting up a custom server block (virtual host) now?
 sudo vim /etc/nginx/nginx.conf
 ```
 
+or(preferably)
+
+```bash
+nano nano /etc/nginx/nginx.conf
+```
+
 2. Add the block below, and implement as written in the comment.
 
-```shell
-#include /etc/nginx/sites-enabled/*; - this line does not need to be added if already available - simply add the hashtag to comment it Ensure it is commented
+```bash
+# include /etc/nginx/sites-enabled/*; - this line does not need to be added if already available - simply add the hashtag to comment it. Ensure it is commented
 
 server {
     listen      80;
     listen   [::]:80;
-    server_name api.staging.kingofpimall.com;
+    server_name domain_or_sub_domain; # e.g. api.zedlabs.xyz, jenkins.zedlabs.xyz, grafana.zedlabs.xyz, or just zedlabs.xyz
 
     location / {
-        proxy_pass http://localhost:8080/;
+        proxy_pass http://localhost:port/; # e.g https:localhost:8080
     }
 }
 ```
 
-2. Configure SSL with certbot and let's encrypt.
+With the above set-up, you're able to auto-redirect Nginx to serve your project straight-up, while also preparing to
+get a free SSL certificate for your domain with some some few extra commands as can be seen below.
+
+3. Configure SSL with certbot and let's encrypt.
 
 ```bash
 sudo apt update
 
 sudo apt install certbot python3-certbot-nginx
 
-sudo certbot --nginx -d api.zedlabs.xyz
+sudo certbot --nginx -d domain_or_sub_domain # e.g. api.zedlabs.xyz
 ```
 
-**a sample progress response**
+**a sample request and progress response - on attempting to renew an SSL cert**
 
 ```bash
-ubuntu@ip-172-31-39-118:~$ sudo certbot --nginx -d api.zedlabs.xyz
 Saving debug log to /var/log/letsencrypt/letsencrypt.log
 Certificate not yet due for renewal
 
@@ -119,7 +147,7 @@ If you like Certbot, please consider supporting our work by:
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ```
 
-**another sample progress and final success sample - for creating a fresh certificate**
+**a sample progress and final success sample - for creating a fresh certificate**
 
 ```bash
 Saving debug log to /var/log/letsencrypt/letsencrypt.log
@@ -162,38 +190,39 @@ If you like Certbot, please consider supporting our work by:
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ```
 
-**if you get the any error regarding the domain not being found(in the server block), that means you failed to add the domain as done in the step 1 of this section. Proceed to update the server name from "_" to as below - as done in the server block above**
+**if you get any error regarding the domain not being found(in the server block), that means you failed to add the domain as done in the step 1 of this section. Proceed to update the server name from "_" to as below - as done in the server block above**
 
 ```bash
-server_name stage.api.terabyte.africa;
+server_name domain_or_sub_domain;
 ```
 
 run the command again
 
 ```bash
-sudo certbot --nginx -d stage.api.terabyte.africa
+sudo certbot --nginx -d domain_or_sub_domain
 ```
 
-3. restart nginx
+4. restart nginx
 
 ```bash
 sudo systemctl restart nginx
 ```
 
-4. then restart you app service
+5. then restart you app service
 
 ```bash
-sudo systemctl restart Terabyte-backend-test-server.service
+sudo systemctl restart application-service-name.service
 ```
 
 ## Removing/Uninstalling Nginx.
 
-### Step 1: Stop the Nginx Service
+### 1: Stop the Nginx Service
+
 ```bash
 sudo systemctl stop nginx
 ```
 
-### Step 2: Uninstall Nginx
+### 2: Uninstall Nginx
 
 #### For just the main package:
 
@@ -202,11 +231,12 @@ sudo apt remove nginx
 ```
 
 #### For a full cleanup (including config files):
+
 ```bash
 sudo apt purge nginx nginx-common
 ```
 
-### Step 3: Remove Any Leftover Files (Optional)
+### 3: Remove Any Leftover Files (Optional)
 
 If you want to delete everything Nginx-related, including custom config files or logs:
 
@@ -214,129 +244,15 @@ If you want to delete everything Nginx-related, including custom config files or
 sudo rm -rf /etc/nginx /var/log/nginx /var/www/html
 ```
 
-### Step 4: Autoremove Unused Dependencies
+### 4: Auto-remove Unused Dependencies
 
 ```bash
 sudo apt autoremove
 ```
 
-You can verify that it's uninstalled with:
+### 5: Verify Uninstallation
+
 ```bash
 which nginx
 ```
 It should return nothing if Nginx is fully removed.
-
-**final sample of an nginx config file after reverse proxy and ssl**
-
-```bash
-user www-data;
-worker_processes auto;
-pid /run/nginx.pid;
-error_log /var/log/nginx/error.log;
-include /etc/nginx/modules-enabled/*.conf;
-
-events {
-        worker_connections 768;
-        # multi_accept on;
-}
-
-http {
-
-        ##
-        # Basic Settings
-        ##
-
-        sendfile on;
-        tcp_nopush on;
-        types_hash_max_size 2048;
-        # server_tokens off;
-
-        # server_names_hash_bucket_size 64;
-        # server_name_in_redirect off;
-
-        include /etc/nginx/mime.types;
-        default_type application/octet-stream;
-
-        ##
-        # SSL Settings
-        ##
-
-        ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3; # Dropping SSLv3, ref: POODLE
-        ssl_prefer_server_ciphers on;
-
-        ##
-        # Logging Settings
-        ##
-
-        access_log /var/log/nginx/access.log;
-
-        ##
-        # Gzip Settings
-        ##
-
-        gzip on;
-
-        # gzip_vary on;
-        # gzip_proxied any;
-        # gzip_comp_level 6;
-        # gzip_buffers 16 8k;
-        # gzip_http_version 1.1;
-        # gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
-
-        ##
-        # Virtual Host Configs
-        ##
-
-        include /etc/nginx/conf.d/*.conf;
-        # include /etc/nginx/sites-enabled/*;
-
-        server {
-                server_name api.zedlabs.xyz;
-
-         location / {
-                proxy_pass http://localhost:5000/;
-           }
-
-    listen [::]:443 ssl ipv6only=on; # managed by Certbot
-    listen 443 ssl; # managed by Certbot
-    ssl_certificate /etc/letsencrypt/live/api.zedlabs.xyz/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/api.zedlabs.xyz/privkey.pem; # managed by Certbot
-    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
-    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
-
-}
-
-
-        server {
-    if ($host = api.zedlabs.xyz) {
-        return 301 https://$host$request_uri;
-    } # managed by Certbot
-
-
-                listen      80;
-                listen   [::]:80;
-                server_name api.zedlabs.xyz;
-    return 404; # managed by Certbot
-}}
-
-#mail {
-#       # See sample authentication script at:
-#       # http://wiki.nginx.org/ImapAuthenticateWithApachePhpScript
-#
-#       # auth_http localhost/auth.php;
-#       # pop3_capabilities "TOP" "USER";
-#       # imap_capabilities "IMAP4rev1" "UIDPLUS";
-#
-#       server {
-#               listen     localhost:110;
-#               protocol   pop3;
-#               proxy      on;
-#       }
-#
-#       server {
-#               listen     localhost:143;
-#               protocol   imap;
-#               proxy      on;
-#       }
-#}
-```
