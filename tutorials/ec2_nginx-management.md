@@ -2,21 +2,14 @@
 
 A detailed sheet with different life-saving steps for working with Nginx on AWS virtual machines(VMs).
 
-> Nginx is a proxy - a reverse proxy, that sits in front of your server. It intercepts every http request to you
+> Nginx is a proxy - a reverse proxy. It sits in front of your server, intercepts every http request to your
 > server, and helps as lot to improve security. It also provides massive support for reverse-proxying, caching, load-balancing,
-> and more I guess. [Read more](https://nginx.org).
+> and a lot more I guess. [Read more](https://nginx.org).
 
-
-## **Nano and Vim tips**
-
-- CTRL + o then ENTER then CTRL + x - save a file in nano.
-- :qa - exits a file in vim
-- :qa! - force-exits a file in vim
-- :wq - saves a file in vim
 
 ## Installing Nginx.
 
-Here’s how to perform a **clean installation of Nginx** on Ubuntu - my prefered OS fro VMs:
+Here’s how to perform a **clean installation of Nginx** on Ubuntu - my preferred OS for VMs:
 
 ### 1: Update Your Package List
 
@@ -33,6 +26,8 @@ sudo apt install nginx -y
 ### 3: Enable and Start the Nginx Service
 
 ```bash
+# sudo systemctl daemon-reexec
+# sudo systemctl daemon-reload
 sudo systemctl enable nginx
 sudo systemctl start nginx
 # sudo systemctl restart nginx
@@ -52,7 +47,7 @@ You should see it **active (running)**.
 - Open a browser and visit:  
 
 ```bash
-http://your-server-public-ip # as earlier stated, Nginx would intercept all incoming http traffic
+http://your-server-public-ip # as earlier stated, Nginx would intercept all incoming http traffic - the nginx home-screen will show
 ```
 You should see the **default Nginx welcome page**.
 
@@ -93,9 +88,9 @@ server {
 ```
 
 With the above set-up, you're able to auto-redirect Nginx to serve your project straight-up, while also preparing to
-get a free SSL certificate for your domain with some some few extra commands as can be seen below.
+get a free SSL certificate for your domain with only some few extra commands as can be seen below.
 
-3. Configure SSL with certbot and let's encrypt.
+3. Configure SSL with certbot and Let's Encrypt.
 
 ```bash
 sudo apt update
@@ -208,11 +203,11 @@ sudo certbot --nginx -d domain_or_sub_domain
 sudo systemctl restart nginx
 ```
 
-5. then restart you app service
+<!-- 5. then restart you app service
 
 ```bash
 sudo systemctl restart application-service-name.service
-```
+``` -->
 
 ## Removing/Uninstalling Nginx.
 
