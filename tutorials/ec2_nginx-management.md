@@ -1,6 +1,6 @@
 # Nginx Management.
 
-A detailed sheet with different life-saving steps for working with Nginx on AWS virtual machines(VMs).
+A detailed sheet with different PRACTICAL life-saving tutorials for working with Nginx on AWS virtual machines(VMs).
 
 > Nginx is a proxy - a reverse proxy. It sits in front of your server, intercepts every http request to your
 > server, and helps as lot to improve security. It also provides massive support for reverse-proxying, caching, load-balancing,
@@ -11,19 +11,19 @@ A detailed sheet with different life-saving steps for working with Nginx on AWS 
 
 Here’s how to perform a **clean installation of Nginx** on Ubuntu - my preferred OS for VMs:
 
-### 1: Update Your Package List
+1. Update Your Package List
 
 ```bash
 sudo apt update && sudo apt upgrade -y
 ```
 
-### 2: Install Nginx
+2. Install Nginx
 
 ```bash
 sudo apt install nginx -y
 ```
 
-### 3: Enable and Start the Nginx Service
+3. Enable and Start the Nginx Service
 
 ```bash
 # sudo systemctl daemon-reexec
@@ -34,7 +34,7 @@ sudo systemctl start nginx
 # sudo systemctl stop nginx
 ```
 
-### 4: Check Nginx Status
+4. Check Nginx Status
 
 ```bash
 sudo systemctl status nginx
@@ -42,7 +42,7 @@ sudo systemctl status nginx
 
 You should see it **active (running)**.
 
-### 5: Verify Installation in Browser or CLI
+5. Verify Installation in Browser or CLI
 
 - Open a browser and visit:  
 
@@ -211,27 +211,27 @@ sudo systemctl restart application-service-name.service
 
 ## Removing/Uninstalling Nginx.
 
-### 1: Stop the Nginx Service
+1. Stop the Nginx Service
 
 ```bash
 sudo systemctl stop nginx
 ```
 
-### 2: Uninstall Nginx
+2. Uninstall Nginx
 
-#### For just the main package:
+- For just the main package:
 
 ```bash
 sudo apt remove nginx
 ```
 
-#### For a full cleanup (including config files):
+- For a full cleanup (including config files):
 
 ```bash
 sudo apt purge nginx nginx-common
 ```
 
-### 3: Remove Any Leftover Files (Optional)
+3. Remove Any Leftover Files (Optional)
 
 If you want to delete everything Nginx-related, including custom config files or logs:
 
@@ -239,13 +239,13 @@ If you want to delete everything Nginx-related, including custom config files or
 sudo rm -rf /etc/nginx /var/log/nginx /var/www/html
 ```
 
-### 4: Auto-remove Unused Dependencies
+4. Auto-remove Unused Dependencies
 
 ```bash
 sudo apt autoremove
 ```
 
-### 5: Verify Uninstallation
+5. Verify Uninstallation
 
 ```bash
 which nginx
