@@ -82,13 +82,22 @@ server {
     server_name domain_or_sub_domain; # e.g. api.zedlabs.xyz, jenkins.zedlabs.xyz, grafana.zedlabs.xyz, or just zedlabs.xyz
 
     location / {
-        proxy_pass http://localhost:port/; # e.g https:localhost:8080
+        proxy_pass http://localhost:port/; # e.g https:localhost:8080 - the port where your project/app runs on
     }
 }
 ```
 
-With the above set-up, you're able to auto-redirect Nginx to serve your project straight-up, while also preparing to
-get a free SSL certificate for your domain with only some few extra commands as can be seen below.
+With the above set-up, you're able to auto-redirect Nginx to serve your project straight-up(to automatically direct to your project home-screen).
+
+> **Your project should now directly appear when you make a non-https(http) request to your serve IP.**
+
+Try it:
+
+```bash
+http://my-server-ip
+```
+
+The set up also prepares you to get a free SSL certificate for your domain with only some few extra commands as can be seen below.
 
 3. Configure SSL with certbot and Let's Encrypt.
 
@@ -203,11 +212,23 @@ sudo certbot --nginx -d domain_or_sub_domain
 sudo systemctl restart nginx
 ```
 
-<!-- 5. then restart you app service
+With all the above set-up, your server should now automatically land on your project home-screen instead of the Nginx home-screen - irrespective of the port
+it is hosted on.
+
+Try it:
 
 ```bash
-sudo systemctl restart application-service-name.service
-``` -->
+http://my-server-ip
+```
+
+**Since you now have https(secure http) added on your domain, you can now simply proceed to wherever your domain is hosted, and create an 'A' record that redirects your server IP to the domain that you added to get https(SSL) for**
+
+Now open your domain or sub-domain in a browser(ensure to use https):
+
+```bash
+https://my-domain-or-sub-domain
+```
+
 
 ## Removing/Uninstalling Nginx.
 
