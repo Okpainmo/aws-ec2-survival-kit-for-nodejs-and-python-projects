@@ -9,6 +9,6 @@ knowledge on provisioning and administering cloud services - with AWS.
 
 Feel free to star, fork(and own a copy), and also contribute.
 
-> Just in case this repository ever gets to save your butt at work or while learning Jenkins, and you wish to send an appreciation, [feel free to buy me a 'coffee'](https://paystack.com/pay/cagnddqmr2).
+> Just in case this repository ever gets to save your butt at work or while learning AWS, and you wish to send an appreciation, [feel free to buy me a 'coffee'](https://paystack.com/pay/cagnddqmr2).
 
 Cheers!!!
