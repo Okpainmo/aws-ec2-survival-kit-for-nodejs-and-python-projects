@@ -27,7 +27,9 @@ E.g.
 ssh -i "path_to_private_key_file" ubuntu@ip_of_the_vm
 ```
 
-The above snippet pattern is the same for every EC2 SSH connection. Below is a list detailing how SSH actually works - from key-pair generation, to connection, and more.
+The above snippet pattern is not unique to AWS. It is the same for every linux SSH connection. It is simply a default SSH command for gaining shell access into remote VMs via SSH.
+
+ Below is a list detailing how SSH actually works - from key-pair generation, to connection, and more.
 
 1. Create/Generate a secure key-pair on(or for - I explained 'delegated SSH connections' below) the machine-to-connect-from(client).
 2. Add the public key of the machine-to-connect-from(client) into the authorized keys file of the machine-to-connect-to(server).
