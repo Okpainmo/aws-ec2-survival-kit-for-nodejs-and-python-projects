@@ -47,11 +47,11 @@ You should see it **active (running)**.
 - Open a browser and visit:  
 
 ```bash
-http://your-server-public-ip # as earlier stated, Nginx would intercept all incoming http traffic - the nginx home-screen will show
+http://your-server-ip # as earlier stated, Nginx would intercept all incoming http traffic - the nginx home-screen will show
 ```
 You should see the **default Nginx welcome page**.
 
-- Or use `curl`:
+- Or use `curl` in the server shell:
 
 ```bash
 curl http://localhost
@@ -94,7 +94,7 @@ With the above set-up, you're able to auto-redirect Nginx to serve your project 
 Try it:
 
 ```bash
-http://my-server-ip
+http://your-server-public-ip
 ```
 
 The set up also prepares you to get a free SSL certificate for your domain with only some few extra commands as can be seen below.
@@ -198,6 +198,10 @@ If you like Certbot, please consider supporting our work by:
 
 ```bash
 server_name domain_or_sub_domain;
+
+# e.g.
+
+server_name chat.mydomain.com
 ```
 
 run the command again
