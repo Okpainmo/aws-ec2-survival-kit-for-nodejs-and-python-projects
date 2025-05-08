@@ -1,4 +1,4 @@
-# AWS EC2 Survival Kit.
+# AWS Cloud Survival Kit.
 
 A knowledge dump repository! 
 
