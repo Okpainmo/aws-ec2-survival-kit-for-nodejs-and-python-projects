@@ -74,7 +74,7 @@ Only do this **in controlled environments** (e.g., private network,
 behind a VPN and/or restrict IP access to only the VM running the 
 Jenkins controller).
 
-### Steps (for security reasons, ensure to open and restrict port 2375 access to only the jenkins master VM IP - also do well to use TLS and switch to port 2376):
+### Steps:
 
 1. **Edit Docker service file on EC2**:
 
@@ -105,21 +105,21 @@ sudo systemctl restart docker
 sudo systemctl status docker
 ```
 
-3. **Open port 2375 in your EC2 instance security group and grant access to ONLY the Jenkins master VM IP address**. 
+3. **Open port 2375 in your EC2 instance security group and grant access to ONLY the Jenkins master/controller VM IP address**. 
 
 - Example Use Case
 
-Allow port 8080 access only from `198.51.100.10`:
+Allowing port 2375 access only from `198.51.100.10`:
 
 * **Type:** Custom TCP
-* **Port Range:** 8080
-* **Source:** `198.51.100.10/32` - Custom TCP(IPV4)
+* **Port Range:** 2375
+* **Source:** Change from `0.0.0.0/0` to `198.51.100.10/32` - Custom TCP(IPV4)
 
-> Do well to add TLS(Transport Layer Security) and switch to port 2376 - while still restricting access to only the Jenkins controller VM IP address.
+> Do well to add TLS(Transport Layer Security) and switch to the more secure port '2376' for docker - while still restricting access to only the Jenkins controller VM IP address.
 
 4. Go to **Jenkins → Manage Jenkins → Clouds → Add a cloud**
 
-5. Select Docker(Options are AWS EC2, Kubernetes, Docker, and 'Copy Existing Cloud' if you already created one) then give the cloud agent a name and proceed.
+5. Select Docker(Options are AWS EC2, Kubernetes, Docker, and 'Copy Existing Cloud' - i.e. if you already created one) then give the cloud agent a name and proceed.
 
 6. **On the "Docker Cloud details" drop-down/menu**
 
@@ -185,5 +185,5 @@ Allow port 8080 access only from `198.51.100.10`:
     }
     ```
 
-**Study on the differences between, and the pros/cons of using Docker as a Jenkins CLOUD agent, and using a NODE(SSH) agent.**
+**Study on the differences between, and the pros/cons of using Docker as a Jenkins CLOUD agent, and using a Jenkins NODE(SSH) agent.**
 
