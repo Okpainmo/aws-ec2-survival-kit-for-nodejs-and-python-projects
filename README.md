@@ -21,10 +21,6 @@ Just below are some ways you can contribute.
 
 4. ...
 
-> Just in case this repository ever gets to save your butt at work or while learning AWS, and you wish to send an appreciation, [feel free to buy me a 'coffee'](https://paystack.com/pay/cagnddqmr2).
-
-Cheers!!!
-
 ## Before You Contribute.
 
 > This project will be a progressive one. I and any other contributor(s), will continue to add relevant updates and information. This makes it very important that you always share details about any contribution you wish to make - before-hand, and avoid the needless stress of proceeding to work a contribution for a topic that is already on the way or in-progress.
