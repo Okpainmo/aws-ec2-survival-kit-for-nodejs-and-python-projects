@@ -1,4 +1,4 @@
-### **Step-by-step Installation of NVM on Ubuntu EC2**
+# **Step-by-step Installation of NVM on Ubuntu EC2**
 
 ```bash
 # 1. Update packages
@@ -20,7 +20,7 @@ nvm --version
 
 ---
 
-### 🚀 Install Node.js using NVM
+## 🚀 Install Node.js using NVM
 
 ```bash
 nvm install --lts     # Install latest LTS version
@@ -29,4 +29,3 @@ node -v               # Verify Node.js
 npm -v                # Verify npm
 ```
 
-Let me know if you’d like [automatic shell config setup](f) or a [Node.js app deploy guide](f).
